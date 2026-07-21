@@ -1,0 +1,78 @@
+name: AppBlocker
+options:
+  bundleIdPrefix: com.yourcompany
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+targets:
+  AppBlocker:
+    type: application
+    platform: iOS
+    sources:
+      - AppBlocker
+      - Shared
+    info:
+      path: AppBlocker/Info.plist
+    entitlements:
+      path: AppBlocker/AppBlocker.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.appblocker
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+    dependencies:
+      - target: ShieldConfigurationExtension
+        embed: true
+      - target: ShieldActionExtension
+        embed: true
+      - target: DeviceActivityMonitorExtension
+        embed: true
+
+  ShieldConfigurationExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - ShieldConfigurationExtension
+      - Shared
+    info:
+      path: ShieldConfigurationExtension/Info.plist
+    entitlements:
+      path: ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.appblocker.shield-configuration
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: true
+
+  ShieldActionExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - ShieldActionExtension
+      - Shared
+    info:
+      path: ShieldActionExtension/Info.plist
+    entitlements:
+      path: ShieldActionExtension/ShieldActionExtension.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.appblocker.shield-action
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: true
+
+  DeviceActivityMonitorExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - DeviceActivityMonitorExtension
+      - Shared
+    info:
+      path: DeviceActivityMonitorExtension/Info.plist
+    entitlements:
+      path: DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.appblocker.device-activity-monitor
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: true
