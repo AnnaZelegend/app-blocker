@@ -7,7 +7,7 @@ struct RootView: View {
     var body: some View {
         Group {
             if authorizationStatus == .approved {
-                HomeView()
+                ContentTabView()
             } else {
                 AuthorizationView(authorizationStatus: $authorizationStatus)
             }

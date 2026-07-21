@@ -26,6 +26,8 @@ targets:
         embed: true
       - target: ShieldActionExtension
         embed: true
+      - target: DeviceActivityMonitorExtension
+        embed: true
 
   ShieldConfigurationExtension:
     type: app-extension
@@ -56,5 +58,21 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.appblocker.shield-action
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: true
+
+  DeviceActivityMonitorExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - DeviceActivityMonitorExtension
+      - Shared
+    info:
+      path: DeviceActivityMonitorExtension/Info.plist
+    entitlements:
+      path: DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.appblocker.device-activity-monitor
         SWIFT_VERSION: "5.0"
         SKIP_INSTALL: true

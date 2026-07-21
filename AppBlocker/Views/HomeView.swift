@@ -6,6 +6,8 @@ import ManagedSettingsUI
 struct HomeView: View {
     @EnvironmentObject private var store: BlockedAppsStore
     @State private var isPickerPresented = false
+    @State private var pendingApplicationUnlock: ApplicationToken?
+    @State private var pendingCategoryUnlock: ActivityCategoryToken?
 
     private var hasBlockedItems: Bool {
         !store.selection.applicationTokens.isEmpty || !store.selection.categoryTokens.isEmpty
@@ -21,7 +23,7 @@ struct HomeView: View {
                                 Label(token)
                                 Spacer()
                                 Button("Unlock") {
-                                    store.unlock(application: token)
+                                    pendingApplicationUnlock = token
                                 }
                                 .buttonStyle(.bordered)
                             }
@@ -31,7 +33,7 @@ struct HomeView: View {
                                 Label(token)
                                 Spacer()
                                 Button("Unlock") {
-                                    store.unlock(category: token)
+                                    pendingCategoryUnlock = token
                                 }
                                 .buttonStyle(.bordered)
                             }
@@ -72,6 +74,33 @@ struct HomeView: View {
                     set: { store.updateSelection($0) }
                 )
             )
+            .sheet(isPresented: unlockSheetBinding) {
+                UnlockConfirmationView(onConfirm: confirmPendingUnlock)
+                    .presentationDetents([.medium])
+            }
         }
+    }
+
+    private var unlockSheetBinding: Binding<Bool> {
+        Binding(
+            get: { pendingApplicationUnlock != nil || pendingCategoryUnlock != nil },
+            set: { isPresented in
+                if !isPresented {
+                    pendingApplicationUnlock = nil
+                    pendingCategoryUnlock = nil
+                }
+            }
+        )
+    }
+
+    private func confirmPendingUnlock() {
+        if let token = pendingApplicationUnlock {
+            store.unlock(application: token)
+        }
+        if let token = pendingCategoryUnlock {
+            store.unlock(category: token)
+        }
+        pendingApplicationUnlock = nil
+        pendingCategoryUnlock = nil
     }
 }
